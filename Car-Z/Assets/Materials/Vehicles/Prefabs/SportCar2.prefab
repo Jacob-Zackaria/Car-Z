@@ -47,7 +47,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.6
   m_ForceAppPointDistance: 0.35
-  m_Mass: 20
+  m_Mass: 40
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
@@ -115,7 +115,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &71624596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,12 +133,15 @@ MonoBehaviour:
     rightWheel: {fileID: 1697245292}
     motor: 1
     steering: 1
+    braking: 1
   - leftWheel: {fileID: 1537506570}
     rightWheel: {fileID: 1555412634}
     motor: 0
     steering: 0
-  maxMotorTorque: 500
+    braking: 1
+  maxMotorTorque: 600
   maxSteeringAngle: 30
+  maxBrakeTorque: 5000
 --- !u!1 &1355811543465836
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +189,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.6
   m_ForceAppPointDistance: 0.35
-  m_Mass: 20
+  m_Mass: 40
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
@@ -342,7 +345,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.6
   m_ForceAppPointDistance: 0.35
-  m_Mass: 20
+  m_Mass: 40
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
@@ -404,7 +407,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.6
   m_ForceAppPointDistance: 0.35
-  m_Mass: 20
+  m_Mass: 40
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4

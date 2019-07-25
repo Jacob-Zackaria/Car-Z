@@ -8,6 +8,8 @@ public struct AxleInfo
     public WheelCollider rightWheel;
     public bool motor;
     public bool steering;
+    public bool braking;
+    public bool handBrake;
 }
 public class CarController : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class CarController : MonoBehaviour
 
     public float maxMotorTorque;
     public float maxSteeringAngle;
+    public float maxBrakeTorque;
 
     public void ApplyLocalPositionToVisuals(WheelCollider collider)
     {
@@ -36,6 +39,8 @@ public class CarController : MonoBehaviour
     {
         float motor = Input.GetAxis("Vertical") * maxMotorTorque;
         float steering = Input.GetAxis("Horizontal") * maxSteeringAngle;
+        float braking = Input.GetAxis("Jump") * maxBrakeTorque;
+
 
         foreach (AxleInfo axleInfo in axleInfos)
         {
@@ -48,6 +53,16 @@ public class CarController : MonoBehaviour
             {
                 axleInfo.leftWheel.steerAngle = steering;
                 axleInfo.rightWheel.steerAngle = steering;
+            }
+            if(axleInfo.braking)
+            {
+                axleInfo.leftWheel.brakeTorque = braking;
+                axleInfo.rightWheel.brakeTorque = braking;
+
+                if(steering > 0 || steering < 0)
+                {
+                    axleInfo.leftWheel.sidewaysFriction.asymptoteSlip = 0.5f;
+                }
             }
 
             ApplyLocalPositionToVisuals(axleInfo.leftWheel);
