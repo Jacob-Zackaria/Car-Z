@@ -4,17 +4,18 @@ public class BaseBullet : MonoBehaviour
 {
     public BulletCharacteristics bulletCharacteristics;
     GameController gameController;
+    private Rigidbody rb;
 
-    private Vector3 lookDirection;
 
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
         gameController = GameController.instance;
     }
 
     private void FixedUpdate()
     {
-        transform.Translate(transform.forward * -1 * bulletCharacteristics.bulletVelocity * Time.deltaTime);
+        rb.MovePosition(rb.position + transform.up * bulletCharacteristics.bulletVelocity * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -23,7 +24,7 @@ public class BaseBullet : MonoBehaviour
         {
             return;
         }
-        gameController.SpawnFromPool("BulletHit", transform.position, Quaternion.identity);
+        gameController.SpawnFromPool("BulletHit", transform.position - transform.up, Quaternion.identity);
         this.gameObject.SetActive(false);
     }
 }

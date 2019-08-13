@@ -8,8 +8,9 @@ public class GameController : MonoBehaviour
     public Button reset;
     public Transform resetPosition;
     public CinemachineVirtualCamera carCamera;
+    public GameObject DeathScreen;
 
-    
+
     private int i = 0;
     private GameObject currentCar;
 
@@ -18,7 +19,7 @@ public class GameController : MonoBehaviour
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionary;
 
-   
+
 
     #region Singleton
     public static GameController instance;
@@ -62,24 +63,20 @@ public class GameController : MonoBehaviour
         {
             currentCar = cars[i];
 
-            CurrentCarReference = Instantiate(currentCar, resetPosition.position, Quaternion.identity);
-            carCamera.Follow = CurrentCarReference.transform;
-            carCamera.LookAt = CurrentCarReference.transform;
+            CreateCar();
         }
     }
     public void OnPress()
     {
         Destroy(CurrentCarReference);
 
-        CurrentCarReference = Instantiate(currentCar, resetPosition.position, Quaternion.identity);
-        carCamera.Follow = CurrentCarReference.transform;
-        carCamera.LookAt = CurrentCarReference.transform;
+        CreateCar();
     }
 
     private void Update()
     {
         //Change cars.
-        if(Input.GetKeyDown(KeyCode.K) && cars != null)
+        if (Input.GetKeyDown(KeyCode.K) && cars != null)
         {
             i += 1;
             currentCar = cars[i % cars.Length];
@@ -103,5 +100,20 @@ public class GameController : MonoBehaviour
 
         poolDictionary[tag].Enqueue(objectToSpawn);
         return (objectToSpawn);
+    }
+
+    private void CreateCar()
+    {
+        CurrentCarReference = Instantiate(currentCar, resetPosition.position, Quaternion.identity);
+        carCamera.Follow = CurrentCarReference.transform;
+        carCamera.LookAt = CurrentCarReference.transform;
+        Canvas canvas = CurrentCarReference.GetComponentInChildren<Canvas>();
+        canvas.worldCamera = Camera.main;
+    }
+
+    public void PlayerDeath()
+    {
+        DeathScreen.SetActive(true);
+
     }
 }
