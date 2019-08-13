@@ -2,9 +2,11 @@
 
 public class WeaponController : MonoBehaviour
 {
+    public float baseWeaponRateOfFire;
+    private Transform weapons;
+    private float rateOfFire;
 
     GameController gameController;
-    private Transform weapons;
 
     public Transform BaseWeapon { get; private set; }
     public Transform SecondWeapon { get; private set; }
@@ -21,7 +23,8 @@ public class WeaponController : MonoBehaviour
 
     private void Start()
     {
-        gameController = GameController.instance;
+        rateOfFire = baseWeaponRateOfFire;
+        gameController = GameController.instance; 
     }
     private void Update()
     {
@@ -31,11 +34,11 @@ public class WeaponController : MonoBehaviour
         }
         weapons = gameController.CurrentCarReference.transform.GetChild(0);
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetButton("Fire1") && rateOfFire <= 0f)
         {
             BaseWeapon = weapons.GetChild(0);
             gameController.SpawnFromPool("BaseWeapon", BaseWeapon.position, BaseWeapon.rotation);
-
+            rateOfFire = baseWeaponRateOfFire;
 
         }
 
@@ -50,7 +53,10 @@ public class WeaponController : MonoBehaviour
             ThirdWeapon = weapons.GetChild(2);
             gameController.SpawnFromPool("ThirdWeapon", ThirdWeapon.position, ThirdWeapon.rotation);
         }
+
+        if(rateOfFire > 0f)
+        {
+            rateOfFire -= Time.deltaTime;
+        }
     }
-    
-    
 }

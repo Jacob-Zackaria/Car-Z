@@ -174,7 +174,9 @@ MonoBehaviour:
   maxMotorTorque: 450
   maxSteeringAngle: 45
   maxBrakeTorque: 5000
-  maxSpeed: 70
+  maxSpeed: 50
+  initialForce: 40
+  brakingForce: 40
 --- !u!1 &1406626852859572
 GameObject:
   m_ObjectHideFlags: 0
@@ -867,7 +869,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5087493743070491313}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.08, z: 3.104}
+  m_LocalPosition: {x: 0, y: -0.08, z: 3.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 356783819327170299}

@@ -17,17 +17,23 @@ public class CarController : MonoBehaviour
     public float maxSteeringAngle;
     public float maxBrakeTorque;
     public float maxSpeed;
+    public float initialForce;
 
     WheelFrictionCurve wheelSidewayFriction;
     WheelFrictionCurve wheelForwardFriction;
 
+    Rigidbody rb;
+
     private float motor = 0f;
     private float steering = 0f;
     private float braking = 0f;
-    private float currentSpeed = 0f;
+    private float finalForce = 0f;
+    private int currentSpeed = 0;
 
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
+
         wheelForwardFriction.extremumSlip = 0.4f;
         wheelForwardFriction.extremumValue = 1f;
         wheelForwardFriction.asymptoteSlip = 0.8f;
@@ -71,10 +77,16 @@ public class CarController : MonoBehaviour
         {
             if (axleInfo.motor)
             {
-                currentSpeed = Mathf.Abs(axleInfo.leftWheel.rpm) / 10;
+                currentSpeed = (int)Mathf.Abs(axleInfo.leftWheel.rpm) / 10;
                 if(currentSpeed > maxSpeed)
                 {
                     motor = 0;
+                }
+
+                if(currentSpeed < (maxSpeed / 2f) && motor != 0f && currentSpeed != 0)
+                {
+                    finalForce = initialForce / currentSpeed;
+                    rb.AddForce(transform.forward * finalForce * (motor >  0 ? 1 : -1), ForceMode.Acceleration);
                 }
 
                 axleInfo.leftWheel.motorTorque = motor;
@@ -86,8 +98,8 @@ public class CarController : MonoBehaviour
                 axleInfo.rightWheel.steerAngle = steering;
             }
             if (braking > 0)
-            {          
-                if(axleInfo.leftWheel.name == "BL")
+            {
+                if (axleInfo.leftWheel.name == "BL")
                 {
                     wheelSidewayFriction.stiffness = 0f;
                     wheelForwardFriction.stiffness = 0f;

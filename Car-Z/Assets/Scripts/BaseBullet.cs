@@ -2,7 +2,7 @@
 
 public class BaseBullet : MonoBehaviour
 {
-    public BulletCharacteristics bulletCharacteristics;
+    public float bulletVelocity;
     GameController gameController;
     private Rigidbody rb;
 
@@ -15,7 +15,7 @@ public class BaseBullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + transform.up * bulletCharacteristics.bulletVelocity * Time.deltaTime);
+        rb.MovePosition(rb.position + transform.up * bulletVelocity * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)

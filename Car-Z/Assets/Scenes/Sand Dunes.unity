@@ -596,7 +596,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18054
+  m_Name: pb_Mesh18058
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -934,6 +934,7 @@ MonoBehaviour:
   reset: {fileID: 1447834986}
   resetPosition: {fileID: 506673974}
   carCamera: {fileID: 867503082}
+  DeathScreen: {fileID: 0}
   cars:
   - {fileID: 1369317255998308, guid: 5a826e1a9f9a0a74fbf63d825c3e464a, type: 3}
   - {fileID: 1779063512229054, guid: 5d02eda6ed23abf43bb92baf6f441c0a, type: 3}
@@ -974,6 +975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eecbd068f05e0345ba6fba5c702a7cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseWeaponRateOfFire: 2
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1300,7 +1302,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18036
+  m_Name: pb_Mesh18040
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
