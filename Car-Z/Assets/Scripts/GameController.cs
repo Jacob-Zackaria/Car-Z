@@ -6,15 +6,19 @@ using Cinemachine;
 public class GameController : MonoBehaviour
 {
     public Button reset;
-    public Transform resetPosition;
+    public Transform[] resetPositions;
     public CinemachineVirtualCamera carCamera;
     public GameObject DeathScreen;
 
 
-    private int i = 0;
+    private int carIndex = 0;
     private GameObject currentCar;
 
     public GameObject[] cars;
+    public DestroyedCars[] destroyedCars;
+    public GameObject carExplosion;
+    public float forceRadius = 10f;
+    public float explosionForce = 700f;
     public GameObject CurrentCarReference { get; private set; }
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionary;
@@ -38,6 +42,13 @@ public class GameController : MonoBehaviour
         public int size;
     }
 
+    [System.Serializable]
+    public struct DestroyedCars
+    {
+        public string carName;
+        public GameObject destroyedCar;
+    }
+
     private void Start()
     {
         //Create pool of objects.
@@ -58,10 +69,10 @@ public class GameController : MonoBehaviour
         }
 
         //Initial car spawn.
-        i = 0;
+        carIndex = 0;
         if (cars != null)
         {
-            currentCar = cars[i];
+            currentCar = cars[carIndex];
 
             CreateCar();
         }
@@ -78,8 +89,8 @@ public class GameController : MonoBehaviour
         //Change cars.
         if (Input.GetKeyDown(KeyCode.K) && cars != null)
         {
-            i += 1;
-            currentCar = cars[i % cars.Length];
+            carIndex += 1;
+            currentCar = cars[carIndex % cars.Length];
 
             OnPress();
         }
@@ -104,16 +115,47 @@ public class GameController : MonoBehaviour
 
     private void CreateCar()
     {
-        CurrentCarReference = Instantiate(currentCar, resetPosition.position, Quaternion.identity);
+        int j = Random.Range(0, resetPositions.Length);
+        CurrentCarReference = Instantiate(currentCar,  resetPositions[j].position, Quaternion.identity);
         carCamera.Follow = CurrentCarReference.transform;
         carCamera.LookAt = CurrentCarReference.transform;
         Canvas canvas = CurrentCarReference.GetComponentInChildren<Canvas>();
         canvas.worldCamera = Camera.main;
     }
 
-    public void PlayerDeath()
+    public void PlayerDeath(GameObject carToDestroy, string destroyedCarName)
     {
-        DeathScreen.SetActive(true);
+        //DeathScreen.SetActive(true);
+        GameObject carDestroyed = null;
+
+        Destroy(carToDestroy);
+        Instantiate(carExplosion, carToDestroy.transform.position, Quaternion.identity);
+
+        foreach (DestroyedCars car in destroyedCars)
+        {
+            if(car.carName == destroyedCarName)
+            {
+                carDestroyed = Instantiate(car.destroyedCar, carToDestroy.transform.position, carToDestroy.transform.rotation);
+                break;
+            }
+        }
+
+        Collider[] componentsToMove = Physics.OverlapSphere(carDestroyed.transform.position, forceRadius);
+        foreach (Collider nearbyObject  in componentsToMove)
+        {
+            Rigidbody rb = nearbyObject.GetComponent<Rigidbody>();
+            HealthManager hm = nearbyObject.GetComponent<HealthManager>();
+            if (hm != null && rb != null)
+            {
+                hm.DecreaseHealth(0.4f);
+                rb.AddForce(-transform.forward * 40f, ForceMode.VelocityChange);
+            }
+            else if (rb != null)
+            {
+                rb.AddExplosionForce(explosionForce, carDestroyed.transform.position, forceRadius);
+
+            }
+        }
 
     }
 }

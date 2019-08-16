@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletVelocity: 30
+  bulletDamage: 0.05
 --- !u!1 &5459309072074165991
 GameObject:
   m_ObjectHideFlags: 0

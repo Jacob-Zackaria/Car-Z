@@ -3,6 +3,7 @@
 public class BaseBullet : MonoBehaviour
 {
     public float bulletVelocity;
+    public float bulletDamage;
     GameController gameController;
     private Rigidbody rb;
 
@@ -22,7 +23,7 @@ public class BaseBullet : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            return;
+            other.GetComponent<HealthManager>().DecreaseHealth(bulletDamage);
         }
         gameController.SpawnFromPool("BulletHit", transform.position - transform.up, Quaternion.identity);
         this.gameObject.SetActive(false);
